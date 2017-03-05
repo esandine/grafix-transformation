@@ -9,6 +9,7 @@ public class Grafix{
     private int height;
     private Pixel[][] data;
     private LinkedList<PointList> edges;
+    public double[][] transformation;
     public Grafix(int width, int height){
 	setWidth(width);
 	setHeight(height);
@@ -19,6 +20,7 @@ public class Grafix{
 	    }
 	}
 	edges = new LinkedList<PointList>();
+	setIdentityMatrix();
     }
     public Grafix(){
 	this(500,500);
@@ -101,17 +103,9 @@ public class Grafix{
 	}
 	return retStr;
     }
-    //fun was the draw function for the first assignment
-    public void fun(){
-	for(int i = 0; i < getWidth(); i++){
-	    for(int j = 0; j< getHeight();j++){
-		data[i][j].setR((i+j)%256);
-		data[i][j].setG((i-j)%256);
-		data[i][j].setB((i*j)%256);
-		//It looks pretty cool
-	    }
-	}
-    }
+
+    //Line Functions
+
     //bresLine1 draws the line in quadrant I using bresenham's line algorithm
     public void bresLine1(int xi, int yi, int xf, int yf, Pixel color){
 	int x = xi;
@@ -219,6 +213,9 @@ public class Grafix{
     public void bresLine(Coor start, Coor end, Pixel p){
 	bresLine((int)start.getX(),(int)start.getY(),(int)end.getX(),(int)end.getY(),p);
     }
+
+    //edgeList functions
+
     //writeEdge writes an edge by connecting the dots
     public void writeEdge(PointList p, Pixel color){
 	Coor start = p.getCoor();
@@ -229,16 +226,25 @@ public class Grafix{
 	    start = end;
 	    end = p.getCoor();
 	}
+	for(int i = 0; i < p.len()-1; i++){
+	    p.getCoor();
+	}
     }
     //writeCoors uses th einstructions to draw an image
     //it is one time use only
     public void writeCoors(Pixel color){
-	PointList edge = edges.poll();
-	while(edge!=null){
-	    writeEdge(edge, color);
+	int i = edges.size();
+	PointList edge;
+	while(i>0){
 	    edge = edges.poll();
+	    edges.add(edge);
+	    writeEdge(edge, color);
+	    i--;
 	}
     }
+
+    //Matrix functions
+
     //scale handles scalar multiplication of edge matrices
     public void scale(double d){
 	LinkedList<PointList> newEdges = new LinkedList<PointList>();
@@ -250,6 +256,7 @@ public class Grafix{
 	}
 	edges = newEdges;
     }
+
     //makeMatrix returns a new empty 4x4 matrix
     public double[][] makeMatrix(){
 	double[][] ret = new double[4][4];
@@ -260,6 +267,7 @@ public class Grafix{
 	}
 	return ret;
     }
+
     //makeIdentityMatrix makes an identity matrix
     public double[][] makeIdentityMatrix(){
 	double[][] ret = makeMatrix();
@@ -271,6 +279,33 @@ public class Grafix{
 	}
 	return ret;
     }
+
+    //setIdentityMatrix resets the transformation matrix
+    public void setIdentityMatrix(){
+	transformation = makeIdentityMatrix();
+    }
+
+    //makeTranslationMatrix makes a translation matrix
+    public double[][] makeTranslationMatrix(double x, double y, double z){
+	double[][] ret = makeIdentityMatrix();
+	ret[0][3] = x;
+	ret[1][3] = y;
+	ret[2][3] = z;
+	return ret;
+    }
+
+    public void multTransformation(double[][] newMatrix){
+	int value;
+	for(int row = 0; row < 4; row++){
+	    for(int col = 0; col < 4; col++){
+		value = 0;
+		for(int i = 0; i < 4; i++){
+		    value+=newMatrix[row][i]*transformation[i][col];
+		}
+		transformation[row][col] = value;
+	    }
+	}
+    }
     //displays a matrix
     public void displayMatrix(double[][] mat){
 	for(int i = 0; i < mat.length; i++){
@@ -280,11 +315,16 @@ public class Grafix{
 	    System.out.println("");
 	}
     }
+
+    //displays the transformation matrix
+    public void displayTransformation(){
+	displayMatrix(transformation);
+    }
     //multipies edgelist by transformation matrix
     //theres no way this long function works
     //it didn't on the first try but I tihnk it works now
-    public void multMatrices(double[][] mat){
-	double[] mults;
+    public void applyTransformation(){
+	double[][] mat  = transformation;
 	PointList points;
 	Coor point;
 	Coor newpoint;
@@ -316,6 +356,9 @@ public class Grafix{
 		}
 	}
     }
+
+    //Image writing functions
+
     //Write function copies the pixels to image file
     public void write(String name){
 	try{
