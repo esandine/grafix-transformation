@@ -14,11 +14,7 @@ public class Grafix{
 	setWidth(width);
 	setHeight(height);
 	data = new Pixel[width][height];
-	for(int i = 0; i< width; i++){
-	    for(int j = 0; j< height; j++){
-		data[i][j]=new Pixel(100,100,100);
-	    }
-	}
+	resetPixels();
 	edges = new LinkedList<PointList>();
 	setIdentityMatrix();
     }
@@ -33,7 +29,8 @@ public class Grafix{
 	height = h;
     }
     public void plot(int x, int y, Pixel p){
-	data[x][y]=p;
+	if(x<getWidth()&&x>-1&&y<getHeight()&&y>-1)
+	    data[x][y]=p;
     }
     public void plot(Coor c, Pixel p){
 	plot((int)c.getX(), (int)c.getY(), p);
@@ -47,6 +44,13 @@ public class Grafix{
 	    p.addCoor(vals[i]);
 	}
 	addEdge(p);
+    }
+    public void resetPixels(){
+	for(int i = 0; i< width; i++){
+            for(int j = 0; j< height; j++){
+                data[i][j]=new Pixel(100,100,100);
+            }
+        }
     }
     //accessors
     public int getWidth(){
@@ -231,8 +235,8 @@ public class Grafix{
 	}
     }
     //writeCoors uses th einstructions to draw an image
-    //it is one time use only
     public void writeCoors(Pixel color){
+	resetPixels();
 	int i = edges.size();
 	PointList edge;
 	while(i>0){
@@ -335,21 +339,21 @@ public class Grafix{
 		    point = points.getCoor();
 		    newpoint = new Coor();
 		    newpoint.setX(mat[0][0]*point.getX()+
-			       mat[1][0]*point.getY()+
-			       mat[2][0]*point.getZ()+
-			       mat[3][0]*point.getL());
-		    newpoint.setY(mat[0][1]*point.getX()+
+			       mat[0][1]*point.getY()+
+			       mat[0][2]*point.getZ()+
+			       mat[0][3]*point.getL());
+		    newpoint.setY(mat[1][0]*point.getX()+
 			       mat[1][1]*point.getY()+
-			       mat[2][1]*point.getZ()+
-			       mat[3][1]*point.getL());
-		    newpoint.setZ(mat[0][2]*point.getX()+
-			       mat[1][2]*point.getY()+
+			       mat[1][2]*point.getZ()+
+			       mat[1][3]*point.getL());
+		    newpoint.setZ(mat[2][0]*point.getX()+
+			       mat[2][1]*point.getY()+
 			       mat[2][2]*point.getZ()+
-			       mat[3][2]*point.getL());
-		    /*point.setL(mat[0][3]*point.getX()+
-			       mat[1][3]*point.getY()+
-			       mat[2][3]*point.getZ()+
-			       mat[3][3]*point.getL());*/
+			       mat[2][3]*point.getL());
+		    point.setL(mat[3][0]*point.getX()+
+			       mat[3][1]*point.getY()+
+			       mat[3][2]*point.getZ()+
+			       mat[3][3]*point.getL());
 		    point.setX(newpoint.getX());
 		    point.setY(newpoint.getY());
 		    point.setZ(newpoint.getZ());
