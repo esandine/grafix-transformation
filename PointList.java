@@ -44,7 +44,7 @@ public class PointList{
     }
     //scalar multiplication of matrix column
     public void scale(double d){
-	Coor next;;
+	Coor next;
 	for(int i = 0; i < len(); i++){
 	    next = getCoor();
 	    next.scale(d);

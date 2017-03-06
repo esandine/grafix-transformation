@@ -20,10 +20,9 @@ public class Driver{
 	g.printEdgeList();
 	g.writeCoors(p);
 	g.write("edgy.ppm");
-	double[][] app = g.makeTranslationMatrix(100,100,5.4);
-	g.multTransformation(app);
-	g.displayTransformation();
+	g.scale(.5,.5,.5);
 	g.applyTransformation();
+	System.out.println("Final Coordinates:");
 	g.printEdgeList();
 	g.writeCoors(p);
 	g.write("edgy2.ppm");

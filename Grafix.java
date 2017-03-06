@@ -250,6 +250,8 @@ public class Grafix{
     //Matrix functions
 
     //scale handles scalar multiplication of edge matrices
+    //deprecated
+    /*
     public void scale(double d){
 	LinkedList<PointList> newEdges = new LinkedList<PointList>();
 	PointList edge = edges.poll();
@@ -260,7 +262,7 @@ public class Grafix{
 	}
 	edges = newEdges;
     }
-
+    */
     //makeMatrix returns a new empty 4x4 matrix
     public double[][] makeMatrix(){
 	double[][] ret = new double[4][4];
@@ -297,7 +299,23 @@ public class Grafix{
 	ret[2][3] = z;
 	return ret;
     }
+    //translate makes and sets translation matrix
+    public void translate(double x, double y, double z){
+	multTransformation(makeTranslationMatrix(x, y, z));
+    }
 
+    public double[][] makeScaleMatrix(double x, double y, double z){
+	double[][] ret = makeIdentityMatrix();
+	System.out.println(x);
+	ret[0][0] = x;
+	ret[1][1] = y;
+	ret[2][2] = z;
+	return ret;
+    }
+
+    public void scale(double x, double y, double z){
+	multTransformation(makeScaleMatrix(x, y, z));
+    }
     public void multTransformation(double[][] newMatrix){
 	int value;
 	for(int row = 0; row < 4; row++){
