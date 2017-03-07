@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.lang.Math;
 
 public class Grafix{
     //instance variables of Grafix
@@ -316,8 +317,33 @@ public class Grafix{
     public void scale(double x, double y, double z){
 	multTransformation(makeScaleMatrix(x, y, z));
     }
+
+    public double[][] makeRotationMatrix(double theta, char axis){
+	theta = Math.PI*theta/180;//converts
+	double[][] ret = makeIdentityMatrix();
+	if(axis == 'z'){
+	    ret[0][0] = Math.cos(theta);
+	    ret[0][1] = Math.sin(theta);
+	    ret[1][0] = -Math.sin(theta);
+	    ret[1][1] = Math.cos(theta);
+	}else if(axis == 'x'){
+	    ret[1][1] = Math.cos(theta);
+	    ret[1][2] = Math.sin(theta);
+	    ret[2][1] = -Math.sin(theta);
+	    ret[2][2] = Math.cos(theta);
+	}else{
+	    ret[0][0] = Math.cos(theta);
+	    ret[0][2] = Math.sin(theta);
+	    ret[2][0] = Math.sin(theta);
+	    ret[2][2] = -Math.cos(theta);
+	}
+	return ret;
+    }
+    public void rotate(double theta, char axis){
+	multTransformation(makeRotationMatrix(theta, axis));
+    }
     public void multTransformation(double[][] newMatrix){
-	int value;
+	double value;
 	for(int row = 0; row < 4; row++){
 	    for(int col = 0; col < 4; col++){
 		value = 0;

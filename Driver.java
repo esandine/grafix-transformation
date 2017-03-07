@@ -20,11 +20,15 @@ public class Driver{
 	g.printEdgeList();
 	g.writeCoors(p);
 	g.write("edgy.ppm");
-	g.scale(.5,.5,.5);
+	//g.scale(.5,.5,.5);
+	//g.translate(100,0,0);
+	g.rotate(90,'z');
+	g.translate(0,500,0);
 	g.applyTransformation();
 	System.out.println("Final Coordinates:");
 	g.printEdgeList();
 	g.writeCoors(p);
 	g.write("edgy2.ppm");
+	
     }
 }
