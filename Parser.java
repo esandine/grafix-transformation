@@ -11,6 +11,8 @@ public class Parser{
 	    System.out.println("We seem to have encountered an io exception");
 	}	
     }
+    //readFile reads a script
+    //note it uses the file test.ppm as an intermediary for saving and displaying
     public static void readFile(String filename){
 	File f = new File(filename);
 	try{
@@ -38,6 +40,7 @@ public class Parser{
 		    runCMD("display test.ppm");
 		}
 	    }	
+	    runCMD("rm test.ppm");
 	}catch(FileNotFoundException e){
 	    System.out.println("NO FILE HATH BEN FOUND");
 	}
