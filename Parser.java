@@ -27,8 +27,8 @@ public class Parser{
 		if(command.equals("line")){
 		    args = new Scanner(s.nextLine());
 		    line = new Coor[2];
-		    line[0] = new Coor(args.nextInt(), args.nextInt(), args.nextInt());
-		    line[1] = new Coor(args.nextInt(), args.nextInt(), args.nextInt());
+		    line[0] = new Coor(args.nextDouble(), args.nextDouble(), args.nextDouble());
+		    line[1] = new Coor(args.nextDouble(), args.nextDouble(), args.nextDouble());
 		    g.addEdge(line);
 		}else if(command.equals("save")){
 		    g.writeCoors(p);
@@ -38,6 +38,19 @@ public class Parser{
 		    g.writeCoors(p);
 		    g.write("test.ppm");
 		    runCMD("display test.ppm");
+		}else if(command.equals("ident")){
+		    g.setIdentityMatrix();
+		}else if(command.equals("scale")){
+		    args = new Scanner(s.nextLine());
+		    g.scale(args.nextDouble(),args.nextDouble(),args.nextDouble());
+		}else if(command.equals("move")){
+		    args = new Scanner(s.nextLine());
+		    g.translate(args.nextDouble(),args.nextDouble(),args.nextDouble());
+		}else if(command.equals("rotate")){
+		    args = new Scanner(s.nextLine());
+		    g.rotate(args.next().charAt(0),args.nextDouble());
+		}else if(command.equals("apply")){
+		    g.applyTransformation();
 		}
 	    }	
 	    runCMD("rm test.ppm");

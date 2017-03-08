@@ -3,7 +3,5 @@ make run:
 	javac Coor.java
 	javac PointList.java
 	javac Grafix.java
-	javac Driver.java
-	java Driver
-	display edgy.ppm
-	display edgy2.ppm
+	javac Parser.java
+	java Parser

@@ -339,7 +339,7 @@ public class Grafix{
 	}
 	return ret;
     }
-    public void rotate(double theta, char axis){
+    public void rotate(char axis, double theta){
 	multTransformation(makeRotationMatrix(theta, axis));
     }
     public void multTransformation(double[][] newMatrix){
