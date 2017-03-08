@@ -1,7 +1,16 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 public class Parser{
+    //runCMD runs a command using java magic, used for display and saving
+    public static void runCMD(String cmd){
+	try{
+	    Process proc = Runtime.getRuntime().exec(cmd);
+	}catch(IOException e){
+	    System.out.println("We seem to have encountered an io exception");
+	}	
+    }
     public static void readFile(String filename){
 	File f = new File(filename);
 	try{
@@ -21,7 +30,12 @@ public class Parser{
 		    g.addEdge(line);
 		}else if(command.equals("save")){
 		    g.writeCoors(p);
-		    g.write(s.nextLine());
+		    g.write("test.ppm");		    
+		    runCMD("convert test.ppm "+s.nextLine());
+		}else if(command.equals("display")){
+		    g.writeCoors(p);
+		    g.write("test.ppm");
+		    runCMD("display test.ppm");
 		}
 	    }	
 	}catch(FileNotFoundException e){
