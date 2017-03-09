@@ -53,7 +53,6 @@ public class Parser{
 		    g.applyTransformation();
 		}
 	    }	
-	    runCMD("rm test.ppm");
 	}catch(FileNotFoundException e){
 	    System.out.println("NO FILE HATH BEN FOUND");
 	}
